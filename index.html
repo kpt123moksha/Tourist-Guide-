@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Namma Kudla — Travel Blog</title>
+  <meta name="description" content="Namma Kudla — stories, guides, photos and maps from Kudla (Mangalore)." />
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Chart.js for dashboard charts -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--bg:#0f1724;--card:#0b1220;--muted:#9aa4b2;--accent:#ff6b6b;--glass: rgba(255,255,255,0.04);--glass-2: rgba(255,255,255,0.03);--max-width:1200px}
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;color:#e6eef6;background:linear-gradient(180deg,#071028 0%, #041025 100%)}
+    a{color:inherit;text-decoration:none}
+    .container{max-width:var(--max-width);margin:0 auto;padding:18px}
+
+    /* Header */
+    header{backdrop-filter: blur(8px);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:12px;padding:12px;margin-bottom:18px}
+    .nav{display:flex;align-items:center;gap:12px}
+    .logo{display:flex;align-items:center;gap:10px;font-weight:700}
+    .logo .badge{background:var(--accent);padding:6px 10px;border-radius:8px;color:#fff}
+    nav{margin-left:auto;display:flex;gap:8px;align-items:center}
+    nav a{padding:8px 12px;border-radius:8px;color:var(--muted)}
+    nav a.active{color:#fff;background:var(--glass)}
+    .mobile-toggle{display:none}
+
+    /* Banner */
+    .banner{display:grid;grid-template-columns:1fr 360px;gap:18px;align-items:start}
+    .hero{background:linear-gradient(160deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:20px;border-radius:12px}
+    .hero h1{margin:0 0 6px;font-size:28px}
+    .hero p{margin:0 0 12px;color:var(--muted)}
+    .featured-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    .card{background:var(--card);padding:12px;border-radius:10px}
+
+    /* Main layout */
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-top:18px}
+    .post{background:linear-gradient(180deg,var(--glass),var(--glass-2));padding:18px;border-radius:12px}
+    .post img{max-width:100%;height:auto;border-radius:8px;margin:8px 0}
+    .meta{color:var(--muted);font-size:13px}
+
+    aside .widget{background:var(--card);padding:12px;border-radius:10px;margin-bottom:12px}
+
+    /* Posts list */
+    .posts-list{display:grid;gap:12px}
+    .post-summary{display:flex;gap:12px;padding:12px;background:linear-gradient(180deg,var(--glass),transparent);border-radius:10px;align-items:center}
+    .post-summary img{width:100px;height:70px;object-fit:cover;border-radius:8px}
+
+    /* Guides */
+    .guide-card{display:flex;gap:12px;align-items:center}
+    .guide-avatar{width:64px;height:64px;border-radius:12px;object-fit:cover}
+
+    /* Form elements */
+    input,textarea,select,button{font-family:inherit}
+    .search{display:flex;gap:8px}
+    input[type=text],textarea,select{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:8px;color:#fff;width:100%}
+    button{background:var(--accent);border:none;color:#fff;padding:8px 12px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted)}
+
+    /* Comments */
+    .comments{margin-top:16px}
+    .comment{padding:8px;border-radius:8px;background:rgba(255,255,255,0.02);margin-bottom:8px}
+
+    /* Responsive */
+    @media (max-width:1000px){.banner{grid-template-columns:1fr} .layout{grid-template-columns:1fr} .featured-grid{grid-template-columns:1fr} }
+    @media (max-width:640px){nav{display:none}.mobile-toggle{display:block;margin-left:auto}header{padding:10px}}
+
+    /* Footer */
+    footer{margin-top:30px;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));color:var(--muted)}
+
+    /* Simple notification */
+    .toast{position:fixed;right:16px;bottom:16px;background:#10202b;padding:12px 16px;border-radius:10px;color:#dff;box-shadow:0 6px 20px rgba(0,0,0,0.5);display:none}
+  </style>
+</head>
+<body>
+  <header class="container">
+    <div class="nav">
+      <div class="logo"><div class="badge">NK</div><div>Namma Kudla</div></div>
+      <nav id="mainNav">
+        <a href="#home" data-route="home" class="active">Home</a>
+        <a href="#blog" data-route="blog">Blog</a>
+        <a href="#destinations" data-route="destinations">Destinations</a>
+        <a href="#guides" data-route="guides">Guides</a>
+        <a href="#about" data-route="about">About</a>
+        <a href="#contact" data-route="contact">Contact</a>
+        <a href="#dashboard" data-route="dashboard">Dashboard</a>
+      </nav>
+      <button class="mobile-toggle" onclick="toggleNav()">☰</button>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <!-- Dynamic content injected here -->
+  </main>
+
+  <footer class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+      <div>&copy; <span id="year"></span> Namma Kudla — All rights reserved</div>
+      <div class="muted">Made with ❤️ for Kudla travellers</div>
+    </div>
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    // ---------- Sample Data (with explicit image URLs) ----------
+const samplePosts = [
+  {
+    id: 'p1',
+    title: 'Sunset at Tannirbavi Beach',
+    author: 'Asha',
+    date: '2025-10-01',
+    tags: ['beach', 'sunset'],
+    category: 'Nature',
+    excerpt: 'An evening walk at Tannirbavi...',
+    content: '<p>Tannirbavi is magical at dusk...</p>',
+    images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop'],
+    destination: 'Kudla'
+  },
+  {
+    id: 'p2',
+    title: 'Temples of Kudla — A Cultural Walk',
+    author: 'Ravi',
+    date: '2025-09-22',
+    tags: ['culture', 'temples'],
+    category: 'Culture',
+    excerpt: 'Exploring Kadri and Mangaladevi...',
+    content: '<p>The spiritual heart of Mangalore lies in its temples...</p>',
+    images: ['https://images.unsplash.com/photo-1604200214739-6f78e69a0d9d?q=80&w=800&auto=format&fit=crop'],
+    destination: 'Kudla'
+  },
+];
+
+const sampleGuides = [
+  {
+    id: 'g1',
+    name: 'Nikhil Rao',
+    bio: 'Local guide with 10+ years of experience',
+    expertise: ['culture', 'food'],
+    avatar: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?q=80&w=400&auto=format&fit=crop'
+  },
+  {
+    id: 'g2',
+    name: 'Leela Menezes',
+    bio: 'Food and heritage enthusiast',
+    expertise: ['food', 'hidden-gems'],
+    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=400&auto=format&fit=crop'
+  }
+];
+
+
+    // Save initial data if not present
+    if(!localStorage.getItem('nk_posts')) localStorage.setItem('nk_posts', JSON.stringify(samplePosts));
+    if(!localStorage.getItem('nk_guides')) localStorage.setItem('nk_guides', JSON.stringify(sampleGuides));
+    if(!localStorage.getItem('nk_users')) localStorage.setItem('nk_users', JSON.stringify([{id:'u1',name:'Admin',role:'admin'}]));
+
+    // Simple router
+    function routeTo(route, params){
+      const app = document.getElementById('app');
+      document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+      const active = document.querySelector('nav a[data-route="'+route+'"]'); if(active) active.classList.add('active');
+      if(route==='home') renderHome(app);
+      else if(route==='blog') renderBlogList(app);
+      else if(route==='post') renderPost(app, params);
+      else if(route==='destinations') renderDestinations(app);
+      else if(route==='destination') renderDestination(app, params);
+      else if(route==='guides') renderGuides(app);
+      else if(route==='guide') renderGuideProfile(app, params);
+      else if(route==='about') renderAbout(app);
+      else if(route==='contact') renderContact(app);
+      else if(route==='dashboard') renderDashboard(app);
+      else renderHome(app);
+    }
+
+    function parseHash(){
+      const hash = location.hash.replace('#','') || 'home';
+      const parts = hash.split('/');
+      return {route:parts[0], params:parts.slice(1)};
+    }
+
+    window.addEventListener('hashchange', ()=>{ const h=parseHash(); routeTo(h.route, h.params); });
+    window.addEventListener('load', ()=>{ document.getElementById('year').textContent = new Date().getFullYear(); const h=parseHash(); routeTo(h.route,h.params); });
+
+    // ---------- UI helpers ----------
+    function el(tag,attrs={},inner=''){ const node=document.createElement(tag); Object.entries(attrs).forEach(([k,v])=>{ if(k==='class') node.className=v; else if(k==='html') node.innerHTML=v; else node.setAttribute(k,v); }); if(typeof inner==='string') node.innerHTML+=inner; return node; }
+    function toast(msg,timeout=3000){const t=document.getElementById('toast'); t.textContent=msg; t.style.display='block'; setTimeout(()=>t.style.display='none',timeout);} 
+    function toggleNav(){ const nav=document.getElementById('mainNav'); nav.style.display = nav.style.display==='flex' ? 'none' : 'flex'; }
+
+    // ---------- Render functions ----------
+    function renderHome(app){ app.innerHTML='';
+      const banner = el('section',{class:'banner'});
+      const hero = el('div',{class:'hero'});
+      hero.innerHTML = `<h1>Welcome to Namma Kudla</h1><p>Stories, guides and photographs celebrating the culture, cuisine and coastline of Kudla (Mangalore).</p><div style="display:flex;gap:8px;margin-top:12px"><a href="#blog"><button>Read Stories</button></a><a href="#guides"><button style="background:#0a6;border-radius:8px">Find a Guide</button></a></div>`;
+      const right = el('div');
+      right.innerHTML = `<div class="card"><h3>Featured</h3><div style="font-size:13px;color:var(--muted)">Sunset at Tannirbavi • Temples of Kudla</div></div><div style="height:12px"></div><div class="card"><h4>Subscribe</h4><p class="muted">Get trip tips and featured stories in your inbox.</p><div style="display:flex;gap:8px;margin-top:8px"><input id="subEmail" type="text" placeholder="you@email.com"><button onclick="subscribe()">Subscribe</button></div></div>`;
+      banner.appendChild(hero); banner.appendChild(right);
+      app.appendChild(banner);
+
+      const layout = el('div',{class:'layout'});
+      const main = el('div');
+      main.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><h2>Recent Posts</h2><div class="search"><input id="homeSearch" type="text" placeholder="Search stories..."><button onclick="searchHome()">Search</button></div></div>`;
+      const postsList = el('div',{class:'posts-list',id:'homePosts'});
+      const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]');
+      posts.forEach(p=>{ const s=el('div',{class:'post-summary','html':`<img src="${p.images && p.images.length ? p.images[0] : 'https://via.placeholder.com/300x200?text=No+Image'}" alt="">
+<div><strong>${p.title}</strong><div class="muted">By ${p.author} • ${p.date}</div><p class="muted">${p.excerpt || ''}</p><a href="#post/${p.id}">Read →</a></div>`}); postsList.appendChild(s); });
+      main.appendChild(postsList);
+
+      const side = el('aside');
+      side.innerHTML = `<div class="widget"><h4>Categories</h4><div class="muted">Nature • Culture • Food • History • Beaches</div></div><div class="widget"><h4>Popular Destinations</h4><ul><li><a href="#destination/Kudla">Kudla</a></li><li><a href="#destination/Surathkal">Surathkal</a></li></ul></div><div class="widget"><h4>Top Guides</h4><div id="homeGuides"></div></div>`;
+      layout.appendChild(main); layout.appendChild(side);
+      app.appendChild(layout);
+
+      // fill guides
+      const guides = JSON.parse(localStorage.getItem('nk_guides')||'[]');
+      const hg = document.getElementById('homeGuides'); hg.innerHTML=''; guides.forEach(g=>{ const gc = el('div',{class:'guide-card','html':`<img class="guide-avatar" src="${g.avatar}" alt=""><div><strong>${g.name}</strong><div class="muted">${g.expertise.join(', ')}</div><a href="#guide/${g.id}">View</a></div>`}); hg.appendChild(gc); });
+    }
+
+    function subscribe(){ const e=document.getElementById('subEmail').value; if(!e){toast('Enter email');return;} toast('Subscribed — thanks!'); }
+    function searchHome(){ const q=document.getElementById('homeSearch').value.toLowerCase(); const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]'); const results = posts.filter(p=> (p.title+p.content+p.excerpt).toLowerCase().includes(q)); if(results.length){ location.hash = 'blog'; setTimeout(()=>{ renderBlogList(document.getElementById('app'),{query:q}) },100);} else toast('No results'); }
+
+    function renderBlogList(app,opts={}){
+      app.innerHTML='';
+      const header = el('div',{style:'display:flex;justify-content:space-between;align-items:center'});
+      header.innerHTML = `<h2>Blog</h2><div style="display:flex;gap:8px"><input id="globalSearch" type="text" placeholder="Search posts"><select id="filterCategory"><option value="">All categories</option><option>Nature</option><option>Culture</option><option>Food</option></select><button onclick="doSearch()">Filter</button><a href="#" onclick="openCreatePost(event)"><button style="background:#1366ff">New Post</button></a></div>`;
+      app.appendChild(header);
+      const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]');
+      const list = el('div',{class:'posts-list'});
+      posts.forEach(p=>{ const s = el('div',{class:'post-summary','html':`<img src="https://picsum.photos/seed/${p.id}/300/200" alt=""><div><strong>${p.title}</strong><div class="muted">By ${p.author} • ${p.date} • ${p.category||'General'}</div><p class="muted">${p.excerpt||''}</p><a href="#post/${p.id}">Read →</a></div>`}); list.appendChild(s); });
+      app.appendChild(list);
+    }
+
+    function doSearch(){ const q=document.getElementById('globalSearch').value.toLowerCase(); const cat=document.getElementById('filterCategory').value; const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]'); const filtered = posts.filter(p=> (p.title+p.excerpt+p.content).toLowerCase().includes(q) && (cat? p.category===cat:true)); localStorage.setItem('nk_last_search', JSON.stringify(filtered)); renderBlogList(document.getElementById('app'));
+      // quick navigate to results area
+      toast(filtered.length+' results');
+    }
+
+    function openCreatePost(e){ e.preventDefault(); const html = `
+      <div class="post">
+        <h3>Create Post</h3>
+        <div style="display:grid;gap:8px">
+          <input id="newTitle" placeholder="Title">
+          <input id="newAuthor" placeholder="Author">
+          <input id="newCategory" placeholder="Category">
+          <input id="newTags" placeholder="Tags (comma)">
+          <textarea id="newExcerpt" placeholder="Short excerpt"></textarea>
+          <textarea id="newContent" placeholder="HTML content"></textarea>
+          <input id="newImage" type="file" accept="image/*">
+          <div style="display:flex;gap:8px"><button onclick="savePost()">Save</button><button onclick="location.hash='blog'" style="background:#444">Cancel</button></div>
+        </div>
+      </div>`;
+      document.getElementById('app').innerHTML = html;
+    }
+
+    function savePost(){ const title=document.getElementById('newTitle').value; if(!title) return toast('Add title'); const author=document.getElementById('newAuthor').value||'Anonymous'; const posts=JSON.parse(localStorage.getItem('nk_posts')||'[]'); const id='p'+Date.now(); const imgInput=document.getElementById('newImage'); const reader=new FileReader();
+      reader.onload = function(ev){ const post={id,title,author,date:new Date().toISOString().split('T')[0],tags:document.getElementById('newTags').value.split(',').map(s=>s.trim()).filter(Boolean),category:document.getElementById('newCategory').value,excerpt:document.getElementById('newExcerpt').value,content:document.getElementById('newContent').value,images:[ev.target.result]}; posts.unshift(post); localStorage.setItem('nk_posts', JSON.stringify(posts)); toast('Post saved'); location.hash='post/'+id; };
+      if(imgInput.files.length) reader.readAsDataURL(imgInput.files[0]); else { const post={id,title,author,date:new Date().toISOString().split('T')[0],tags:document.getElementById('newTags').value.split(',').map(s=>s.trim()).filter(Boolean),category:document.getElementById('newCategory').value,excerpt:document.getElementById('newExcerpt').value,content:document.getElementById('newContent').value,images:[]}; posts.unshift(post); localStorage.setItem('nk_posts', JSON.stringify(posts)); toast('Post saved'); location.hash='post/'+id; }
+    }
+
+    function renderPost(app,params){ const id=params[0]; const posts=JSON.parse(localStorage.getItem('nk_posts')||'[]'); const post = posts.find(p=>p.id===id); if(!post){ app.innerHTML='<div class="post"><h3>Not found</h3></div>'; return; }
+      app.innerHTML=''; const pdiv = el('article',{class:'post'});
+      pdiv.innerHTML = `<h2>${post.title}</h2><div class="meta">By ${post.author} • ${post.date}</div><div>${post.content}</div>`;
+      if(post.images && post.images.length) { post.images.forEach(src=>{ const img = document.createElement('img'); img.src = src; pdiv.appendChild(img); }); }
+      // comments
+      const comments = JSON.parse(localStorage.getItem('nk_comments_'+post.id)||'[]');
+      const cwrap = el('div',{class:'comments'});
+      cwrap.innerHTML = `<h4>Comments (${comments.length})</h4><div id="commentsList"></div><div style="margin-top:8px"><input id="cName" placeholder="Your name"><textarea id="cText" placeholder="Your comment"></textarea><div style="display:flex;gap:8px"><button onclick="addComment('${post.id}')">Add Comment</button></div></div>`;
+      pdiv.appendChild(cwrap);
+      app.appendChild(pdiv);
+      renderComments(post.id);
+    }
+
+    function addComment(pid){ const name=document.getElementById('cName').value||'Guest'; const text=document.getElementById('cText').value; if(!text) return toast('Type comment'); const key='nk_comments_'+pid; const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.unshift({name,text,date:new Date().toISOString().split('T')[0]}); localStorage.setItem(key, JSON.stringify(arr)); renderComments(pid); document.getElementById('cText').value=''; toast('Comment added'); }
+    function renderComments(pid){ const key='nk_comments_'+pid; const arr=JSON.parse(localStorage.getItem(key)||'[]'); const list=document.getElementById('commentsList'); if(!list) return; list.innerHTML=''; arr.forEach(c=>{ const d=el('div',{class:'comment','html':`<strong>${c.name}</strong> <div class="muted" style="font-size:12px">${c.date}</div><div>${c.text}</div>`}); list.appendChild(d); }); }
+
+    function renderDestinations(app){
+  // enhanced destinations overview — renders destination cards into the main app container
+  app.innerHTML = '';
+  const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]');
+  const destinations = ['Kudla','Surathkal','Panambur','Tannirbhavi','Panemangalore'];
+const destinationImages = {
+  Kudla: 'https://images.unsplash.com/photo-1526779259212-939e64788e3a?q=80&w=800&auto=format&fit=crop',
+  Surathkal: 'https://images.unsplash.com/photo-1589712235278-13b6c5b86c62?q=80&w=800&auto=format&fit=crop',
+  Panambur: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
+  Tannirbhavi: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?q=80&w=800&auto=format&fit=crop',
+  Panemangalore: 'https://images.unsplash.com/photo-1604152135912-04a579b1f5f0?q=80&w=800&auto=format&fit=crop'
+};
+
+  const html = `
+    <div class="post">
+      <h2>Destinations & Guides</h2>
+      <p class="muted">In-depth guides, maps and tips for the best spots around Kudla.</p>
+      <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px" id="destinationsGrid">
+        ${destinations.map(d=>`<div class="card"><img src="${destinationImages[d] || 'https://via.placeholder.com/800x600?text='+encodeURIComponent(d)}" style="width:100%;height:140px;object-fit:cover;border-radius:8px"><h3 style="margin-top:8px">${d}</h3><p class="muted">Overview about ${d} — culture, food, beaches, attractions.</p><div style="display:flex;gap:8px;margin-top:8px"><a href="#destination/${encodeURIComponent(d)}"><button class="btn">Explore</button></a><a href="#blog" onclick="filterByDestination('${encodeURIComponent(d)}')" style="margin-left:auto"><button style="background:transparent;border:1px solid rgba(0,0,0,0.06)">Related Posts</button></a></div></div>`).join('')}
+      </div>
+    </div>
+  `;
+  app.innerHTML = html;
+}
+
+function renderDestination(app,params){
+  // detailed destination page — shows map, quick tips, attractions and related posts
+  const name = params && params[0] ? decodeURIComponent(params[0]) : 'Unknown';
+  const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]');
+  const related = posts.filter(p=> (p.destination||'').toLowerCase() === name.toLowerCase() || (p.tags||[]).map(t=>t.toLowerCase()).includes(name.toLowerCase()));
+
+  app.innerHTML = `
+    <div class="post">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+          <div>
+            <h2>${name}</h2>
+            <div class="muted">Overview, tips, attractions and maps</div>
+            <p class="muted">A curated guide for travellers visiting <strong>${name}</strong>. Find local tips, where to eat, what to see and how to get around.</p>
+          </div>
+          <div style="min-width:220px;max-width:320px;text-align:right">
+            <div class="card">
+              <div style="font-weight:700">Plan your visit</div>
+              <div class="muted small">Best time: Oct - Feb</div>
+              <div class="muted small">Nearest transport: Bus / Train</div>
+              <div style="margin-top:8px"><a href="#guides"><button class="btn">Book a Guide</button></a></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;align-items:start">
+          <div class="card" style="padding:12px">
+            <h3>Map & Directions</h3>
+            <div style="margin:12px 0"><iframe width="100%" height="320" src="https://www.google.com/maps?q=${encodeURIComponent(name + ' Kudla')}&output=embed"></iframe></div>
+            <h4>Quick tips</h4>
+            <ul class="muted" style="margin:6px 0 0 18px">
+              <li>Respect local customs and timings for religious places.</li>
+              <li>Try local cuisine — ask guides for best stalls.</li>
+              <li>Carry water and footwear for beach/heritage trails.</li>
+            </ul>
+          </div>
+
+          <aside>
+            <div class="card">
+              <h4>Nearby Attractions</h4>
+              <ul class="muted" style="margin:6px 0 0 18px">
+                <li>Major Temple / Church / Lighthouse (example)</li>
+                <li>Popular beach / viewpoint</li>
+                <li>Local market & food street</li>
+              </ul>
+            </div>
+
+            <div style="height:12px"></div>
+
+            <div class="card">
+              <h4>Top Guides near ${name}</h4>
+              <div id="destGuides" class="muted">Loading guides…</div>
+            </div>
+          </aside>
+        </div>
+
+        <div>
+          <h3>Related Posts</h3>
+          <div class="posts-list" id="relatedPosts">${related.length? '' : '<div class="muted">No related posts yet.</div>'}</div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // populate related posts
+  const rp = document.getElementById('relatedPosts');
+  if(related.length){ related.forEach(p=>{ rp.innerHTML += `<div class="post-summary"><img src="https://picsum.photos/seed/${p.id}/300/200"><div><strong>${p.title}</strong><div class="muted">${p.date} • ${p.author}</div><a href="#post/${p.id}">Read →</a></div></div>`; }); }
+
+  // populate guides (simple fuzzy match by expertise)
+  const guides = JSON.parse(localStorage.getItem('nk_guides')||'[]');
+  const dg = document.getElementById('destGuides');
+  dg.innerHTML = '';
+  const near = guides.filter(g=> g.expertise.join(' ').toLowerCase().includes(name.toLowerCase()) || g.bio.toLowerCase().includes(name.toLowerCase()));
+  const list = (near.length? near : guides.slice(0,3));
+  list.forEach(g=>{ dg.innerHTML += `<div style="display:flex;gap:8px;align-items:center;margin-top:8px"><img src="${g.avatar}" style="width:56px;height:56px;object-fit:cover;border-radius:8px"><div><strong>${g.name}</strong><div class="muted small">${g.expertise.join(', ')}</div><a href="#guide/${g.id}">View →</a></div></div>`; });
+}
+
+// helper to filter posts when clicking related posts button
+function filterByDestination(dest){ const clean = decodeURIComponent(dest); document.getElementById('homeSearch')?.value && (document.getElementById('homeSearch').value = clean); const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]'); const filtered = posts.filter(p=> (p.destination||'').toLowerCase() === clean.toLowerCase() || (p.tags||[]).map(t=>t.toLowerCase()).includes(clean.toLowerCase())); localStorage.setItem('nk_last_search', JSON.stringify(filtered)); location.hash = 'blog'; }
+
+    function renderGuides(app){ app.innerHTML=''; const guides = JSON.parse(localStorage.getItem('nk_guides')||'[]'); app.innerHTML = `<h2>Guides</h2><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px">`+guides.map(g=>`<div class="card"><div style="display:flex;gap:10px;align-items:center"><img src="${g.avatar}" style="width:72px;height:72px;border-radius:10px;object-fit:cover"><div><strong>${g.name}</strong><div class="muted">${g.expertise.join(', ')}</div></div></div><p class="muted">${g.bio}</p><a href="#guide/${g.id}">View Profile →</a></div>`).join('')+`</div>`;
+    }
+
+    function renderGuideProfile(app,params){ const id=params[0]; const guides = JSON.parse(localStorage.getItem('nk_guides')||'[]'); const g = guides.find(x=>x.id===id); if(!g){ app.innerHTML='<div class="post"><h3>Guide not found</h3></div>'; return; }
+      app.innerHTML = `<div class="post"><div style="display:flex;gap:16px;align-items:center"><img src="${g.avatar}" style="width:120px;height:120px;border-radius:12px;object-fit:cover"><div><h2>${g.name}</h2><div class="muted">${g.expertise.join(', ')}</div><p>${g.bio}</p><div style="display:flex;gap:8px"><a href="#contact"><button>Contact</button></a><button onclick="leaveGuideFeedback('${g.id}')">Leave Feedback</button></div></div></div><h3>Guide Recommendations</h3><div id="guidePosts" class="posts-list"></div><h3>Feedback</h3><div id="guideFeedback"></div></div>`;
+      // list posts by guide
+      const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]'); const gp = posts.filter(p=>p.author===g.name); const node = document.getElementById('guidePosts'); if(gp.length) gp.forEach(p=> node.innerHTML += `<div class="post-summary"><img src="https://picsum.photos/seed/${p.id}/300/200"><div><strong>${p.title}</strong><div class="muted">${p.date}</div><a href="#post/${p.id}">Read →</a></div></div>`); else node.innerHTML='<div class="muted">No posts yet</div>';
+      // feedback
+      const fb = JSON.parse(localStorage.getItem('nk_guide_fb_'+g.id)||'[]'); const fnode = document.getElementById('guideFeedback'); if(fb.length) fb.forEach(f=> fnode.innerHTML += `<div class="comment"><strong>${f.name}</strong><div class="muted">${f.date}</div><div>${f.text}</div></div>`); else fnode.innerHTML='<div class="muted">No feedback yet</div>';
+    }
+
+    function leaveGuideFeedback(gid){ const name=prompt('Your name'); const text=prompt('Your feedback'); if(!text) return; const key='nk_guide_fb_'+gid; const arr=JSON.parse(localStorage.getItem(key)||'[]'); arr.unshift({name:name||'Guest',text,date:new Date().toISOString().split('T')[0]}); localStorage.setItem(key, JSON.stringify(arr)); toast('Thanks for feedback'); renderGuideProfile(document.getElementById('app'), [gid]); }
+
+    function renderAbout(app){ app.innerHTML = `<div class="post"><h2>About Namma Kudla</h2><p>A community-driven travel blog celebrating Kudla — its people, food, heritage and coastline. Built as demo using HTML/CSS/JS.</p></div>`; }
+    function renderContact(app){ app.innerHTML = `<div class="post"><h2>Contact</h2><p class="muted">Reach out for collaborations or guide requests.</p><div style="display:grid;gap:8px"><input id="ctName" placeholder="Name"><input id="ctEmail" placeholder="Email"><textarea id="ctMsg" placeholder="Message"></textarea><button onclick="sendContact()">Send</button></div></div>`; }
+    function sendContact(){ const n=document.getElementById('ctName').value||'Guest'; const e=document.getElementById('ctEmail').value||''; const m=document.getElementById('ctMsg').value||''; if(!m) return toast('Add message'); // store locally
+      const arr = JSON.parse(localStorage.getItem('nk_contacts')||'[]'); arr.unshift({name:n,email:e,msg:m,date:new Date().toISOString().split('T')[0]}); localStorage.setItem('nk_contacts', JSON.stringify(arr)); toast('Message sent'); document.getElementById('ctMsg').value=''; }
+
+    // Simple admin dashboard (overview + management UI)
+    function renderDashboard(app){ app.innerHTML='';
+      const users = JSON.parse(localStorage.getItem('nk_users')||'[]'); const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]'); const contacts = JSON.parse(localStorage.getItem('nk_contacts')||'[]');
+      const html = `<div style="display:grid;gap:12px"><div style="display:flex;gap:12px;flex-wrap:wrap"><div class="card" style="flex:1"><h3>Users</h3><div class="muted">Total users: ${users.length}</div><div id="userList"></div></div><div class="card" style="flex:1"><h3>Content</h3><div class="muted">Total posts: ${posts.length}</div><div id="postList"></div></div><div class="card" style="flex:1"><h3>Recent Contacts</h3><div id="contactList">${contacts.slice(0,5).map(c=>`<div class="muted">${c.date} — ${c.name}</div>`).join('')}</div></div></div></div>`;
+      app.innerHTML = html;
+      // lists
+      const ul = document.getElementById('userList'); ul.innerHTML = users.map(u=>`<div style="display:flex;justify-content:space-between;padding:6px 0"><div>${u.name}</div><div class="muted">${u.role||'visitor'}</div></div>`).join('');
+      const pl = document.getElementById('postList'); pl.innerHTML = posts.map(p=>`<div style="display:flex;justify-content:space-between;padding:6px 0"><div>${p.title}</div><div class="muted">${p.date}</div></div>`).join('');
+      // chart
+      <!-- const ctx = document.getElementById('activityChart').getContext('2d'); new Chart(ctx, {type:'bar',data:{labels:posts.slice(0,6).map(p=>p.date),datasets:[{label:'Posts',data:posts.slice(0,6).map((_,i)=>Math.max(1,Math.floor(Math.random()*10))),backgroundColor:'rgba(255,107,107,0.6)'}]},options:{responsive:true,maintainAspectRatio:false}}); -->
+    }
+
+    // basic keyboard shortcuts
+    document.addEventListener('keydown', e=>{ if(e.key==='/' && !document.querySelector('input:focus')){ e.preventDefault(); location.hash='blog'; setTimeout(()=>document.getElementById('globalSearch')?.focus(),50); }});
+  </script>
+</body>
+</html>

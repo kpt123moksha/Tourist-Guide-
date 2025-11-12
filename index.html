@@ -279,19 +279,32 @@ const sampleGuides = [
   const posts = JSON.parse(localStorage.getItem('nk_posts')||'[]');
   const destinations = ['Kudla','Surathkal','Panambur','Tannirbhavi','Panemangalore'];
 const destinationImages = {
-  Kudla: 'https://images.unsplash.com/photo-1526779259212-939e64788e3a?q=80&w=800&auto=format&fit=crop',
-  Surathkal: 'https://images.unsplash.com/photo-1589712235278-13b6c5b86c62?q=80&w=800&auto=format&fit=crop',
+  Kudla: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/Dasara_Navaratri_decorations_Kudroli_Temple_Mangalore_Karnataka.jpg',
+  Surathkal: 'https://mangaloretourism.in/images/places-to-visit/header/nitk-surathkal-beach-mangalore-tourism-entry-fee-timings-holidays-reviews-header.jpg',
   Panambur: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?q=80&w=800&auto=format&fit=crop',
-  Tannirbhavi: 'https://images.unsplash.com/photo-1579586337278-3befd40fd17a?q=80&w=800&auto=format&fit=crop',
-  Panemangalore: 'https://images.unsplash.com/photo-1604152135912-04a579b1f5f0?q=80&w=800&auto=format&fit=crop'
+Tannirbhavi: 'https://hblimg.mmtcdn.com/content/hubble/img/manglore/mmt/activities/m_Tannirbhavi%20Beach-3_l_421_561.jpg',
+  Panemangalore: 'https://media.assettype.com/deccanherald/2025-02-10/36mg5zp7/pnemangalore1.jpg?w=1200&h=675&auto=format,compress&fit=max&enlarge=true'
 };
+
 
   const html = `
     <div class="post">
       <h2>Destinations & Guides</h2>
       <p class="muted">In-depth guides, maps and tips for the best spots around Kudla.</p>
       <div style="margin-top:12px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px" id="destinationsGrid">
-        ${destinations.map(d=>`<div class="card"><img src="${destinationImages[d] || 'https://via.placeholder.com/800x600?text='+encodeURIComponent(d)}" style="width:100%;height:140px;object-fit:cover;border-radius:8px"><h3 style="margin-top:8px">${d}</h3><p class="muted">Overview about ${d} — culture, food, beaches, attractions.</p><div style="display:flex;gap:8px;margin-top:8px"><a href="#destination/${encodeURIComponent(d)}"><button class="btn">Explore</button></a><a href="#blog" onclick="filterByDestination('${encodeURIComponent(d)}')" style="margin-left:auto"><button style="background:transparent;border:1px solid rgba(0,0,0,0.06)">Related Posts</button></a></div></div>`).join('')}
+        ${destinations.map(d => `
+          <div class="card">
+            <img src="${destinationImages[d] || 'https://via.placeholder.com/800x600?text='+encodeURIComponent(d)}"
+                 style="width:100%;height:140px;object-fit:cover;border-radius:8px">
+            <h3 style="margin-top:8px">${d}</h3>
+            <p class="muted">Overview about ${d} — culture, food, beaches, attractions.</p>
+            <div style="display:flex;gap:8px;margin-top:8px">
+              <a href="#destination/${encodeURIComponent(d)}"><button class="btn">Explore</button></a>
+              <a href="#blog" onclick="filterByDestination('${encodeURIComponent(d)}')" style="margin-left:auto">
+                <button style="background:transparent;border:1px solid rgba(0,0,0,0.06)">Related Posts</button>
+              </a>
+            </div>
+          </div>`).join('')}
       </div>
     </div>
   `;
